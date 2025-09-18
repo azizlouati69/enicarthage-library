@@ -1,0 +1,89 @@
+<div class="app-container">
+  <app-header></app-header>
+  
+  <div class="main-content with-sidebar">
+    <app-sidebar></app-sidebar>
+    
+    <main class="content-area">
+      <!-- Static Dashboard Content for Screenshots -->
+      <div class="dashboard-container">
+        <h1>ENICARTHAGE Library Management System</h1>
+        
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">📚</div>
+            <div class="stat-content">
+              <h3>Total Books</h3>
+              <p class="stat-number">12,543</p>
+              <span class="stat-change positive">+5.2%</span>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">📖</div>
+            <div class="stat-content">
+              <h3>Active Borrowings</h3>
+              <p class="stat-number">2,847</p>
+              <span class="stat-change positive">+12.1%</span>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-content">
+              <h3>Registered Users</h3>
+              <p class="stat-number">8,234</p>
+              <span class="stat-change positive">+8.7%</span>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">📅</div>
+            <div class="stat-content">
+              <h3>Upcoming Events</h3>
+              <p class="stat-number">23</p>
+              <span class="stat-change positive">+3</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Books Section -->
+        <div class="books-section">
+          <h2>Recent Books</h2>
+          <div class="books-grid">
+            <div class="book-card">
+              <div class="book-cover">📖</div>
+              <h4>Introduction to Algorithms</h4>
+              <p>Thomas H. Cormen</p>
+              <span class="book-status available">Available</span>
+            </div>
+            
+            <div class="book-card">
+              <div class="book-cover">📖</div>
+              <h4>Clean Code</h4>
+              <p>Robert C. Martin</p>
+              <span class="book-status borrowed">Borrowed</span>
+            </div>
+            
+            <div class="book-card">
+              <div class="book-cover">📖</div>
+              <h4>Design Patterns</h4>
+              <p>Gang of Four</p>
+              <span class="book-status available">Available</span>
+            </div>
+            
+            <div class="book-card">
+              <div class="book-cover">📖</div>
+              <h4>System Design Interview</h4>
+              <p>Alex Xu</p>
+              <span class="book-status reserved">Reserved</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <app-footer></app-footer>
+</div>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENICARTHAGE Library Management System - Sign Up</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            color: #212529;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e88e5, #42a5f5);
+            color: white;
+            padding: 16px 32px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            width: 300px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 32px;
+        }
+
+        .signup-container {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            width: 100%;
+            max-width: 400px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .signup-container:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+
+        .signup-container h1 {
+            color: #212529;
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 32px;
+            background: linear-gradient(to right, #1976d2, #42a5f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .form-group .material-icons {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            font-size: 20px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 12px 12px 40px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-input:focus {
+            border-color: #1976d2;
+            box-shadow: 0 0 8px rgba(25, 118, 210, 0.3);
+            outline: none;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .signup-button {
+            width: 100%;
+            padding: 12px;
+            background: #1976d2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .signup-button:hover {
+            background: #1565c0;
+            transform: translateY(-1px);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 0.9rem;
+        }
+
+        .login-link a {
+            color: #1976d2;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+            color: #1565c0;
+        }
+
+        .footer {
+            background: #212529;
+            color: #f8f9fa;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+            font-size: 0.95rem;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 576px) {
+            .header {
+                padding: 12px 24px;
+            }
+
+            .logo {
+                width: 150px;
+                height: 25px;
+            }
+
+            .signup-container {
+                padding: 24px;
+            }
+
+            .signup-container h1 {
+                font-size: 1.8rem;
+            }
+
+            .form-input {
+                padding: 10px 10px 10px 36px;
+                font-size: 0.9rem;
+            }
+
+            .form-group .material-icons {
+                font-size: 18px;
+            }
+
+            .signup-button {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <img src="./images/logo.png" alt="Library Logo" class="logo">
+        </header>
+        
+        <main class="main-content">
+            <div class="signup-container">
+                <h1>Sign Up</h1>
+                <div class="error-message" id="error-message">Please check your input</div>
+                <form>
+                    <div class="form-group">
+                        <i class="material-icons">person</i>
+                        <input type="text" class="form-input" placeholder="Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="material-icons">email</i>
+                        <input type="email" class="form-input" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="material-icons">lock</i>
+                        <input type="password" class="form-input" placeholder="Password" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="material-icons">lock</i>
+                        <input type="password" class="form-input" placeholder="Confirm Password" required>
+                    </div>
+                    <button type="submit" class="signup-button">Sign Up</button>
+                </form>
+                <div class="login-link">
+                    Already have an account? <a href="login.html">Login</a>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <p>&copy; 2023 ENICARTHAGE Library Management System. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>

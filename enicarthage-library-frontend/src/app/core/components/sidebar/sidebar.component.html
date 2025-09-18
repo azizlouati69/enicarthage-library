@@ -1,0 +1,46 @@
+<mat-sidenav-container class="sidebar-container">
+  <mat-sidenav 
+    #sidenav 
+    mode="side" 
+    [opened]="isOpen"
+    class="sidebar"
+    [class.sidebar-collapsed]="!isOpen"
+  >
+    <div class="sidebar-header">
+      <button mat-icon-button (click)="toggleSidebar()" class="toggle-button">
+        <mat-icon>{{ isOpen ? 'chevron_left' : 'chevron_right' }}</mat-icon>
+      </button>
+    </div>
+
+    <mat-nav-list class="nav-list">
+      <ng-container *ngFor="let item of filteredMenuItems">
+        <a 
+          mat-list-item 
+          [routerLink]="item.route"
+          [class.active]="isActiveRoute(item.route)"
+          class="nav-item"
+        >
+          <mat-icon matListItemIcon class="nav-icon">{{ item.icon }}</mat-icon>
+          <span matListItemTitle class="nav-label">{{ item.label }}</span>
+        </a>
+      </ng-container>
+    </mat-nav-list>
+
+    <div class="sidebar-footer">
+      <mat-divider></mat-divider>
+      <div class="user-info">
+        <div class="user-avatar">
+          <mat-icon>account_circle</mat-icon>
+        </div>
+        <div class="user-details" *ngIf="isOpen">
+          <div class="user-name">{{ currentUser?.firstName }} {{ currentUser?.lastName }}</div>
+          <div class="user-role">{{ currentUser?.role }}</div>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="main-content">
+    <!-- Content will be rendered here by the router -->
+  </mat-sidenav-content>
+</mat-sidenav-container>
