@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
@@ -38,4 +40,14 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     
     @Query("SELECT e FROM Event e WHERE e.maxAttendees IS NOT NULL AND e.currentAttendees < e.maxAttendees")
     List<Event> findEventsWithAvailableSpots();
+    
+    @Query("SELECT e FROM Event e WHERE e.title LIKE %:searchTerm% OR e.description LIKE %:searchTerm%")
+    Page<Event> findBySearchTerm(@Param("searchTerm") String searchTerm, Pageable pageable);
+    
+    Long countByStatus(Event.EventStatus status);
+    
+    Long countByType(Event.EventType type);
+    
+    @Query("SELECT e FROM Event e WHERE e.startDate <= :startDate AND e.endDate >= :endDate")
+    List<Event> findOngoingEvents(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }

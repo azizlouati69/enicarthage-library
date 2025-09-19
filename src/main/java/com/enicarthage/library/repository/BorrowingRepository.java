@@ -42,4 +42,11 @@ public interface BorrowingRepository extends JpaRepository<Borrowing, Long> {
     
     @Query("SELECT b FROM Borrowing b WHERE b.book = :book AND b.status = 'ACTIVE'")
     List<Borrowing> findActiveBorrowingsByBook(@Param("book") Book book);
+    
+    List<Borrowing> findByUserAndBookAndStatus(User user, Book book, Borrowing.BorrowingStatus status);
+    
+    Long countByStatus(Borrowing.BorrowingStatus status);
+    
+    @Query("SELECT COUNT(b) FROM Borrowing b WHERE b.dueDate < :currentDate AND b.status = 'ACTIVE'")
+    Long countOverdueBorrowings(@Param("currentDate") LocalDateTime currentDate);
 }
