@@ -1,0 +1,61 @@
+<mat-toolbar color="primary" class="header-toolbar">
+  <div class="header-content">
+    <div class="header-left">
+      <button mat-icon-button (click)="toggleSidebar()" class="menu-button">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="logo">
+        <mat-icon class="logo-icon">local_library</mat-icon>
+        ENICARTHAGE Library
+      </span>
+    </div>
+
+    <div class="header-center">
+      <div class="search-container">
+        <input 
+          type="text" 
+          placeholder="Search books, authors, ISBN..." 
+          class="search-input"
+          #searchInput
+          (keyup.enter)="onSearch(searchInput.value)"
+        >
+        <button mat-icon-button (click)="onSearch(searchInput.value)" class="search-button">
+          <mat-icon>search</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <button mat-icon-button [matBadge]="notifications" matBadgeColor="warn" class="notification-button">
+        <mat-icon>notifications</mat-icon>
+      </button>
+
+      <button mat-icon-button [matMenuTriggerFor]="userMenu" class="user-menu-button">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+
+      <mat-menu #userMenu="matMenu">
+        <div class="user-menu-header">
+          <div class="user-info">
+            <div class="user-name">{{ userDisplayName }}</div>
+            <div class="user-role">{{ currentUser?.role }}</div>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <button mat-menu-item routerLink="/profile">
+          <mat-icon>person</mat-icon>
+          <span>Profile</span>
+        </button>
+        <button mat-menu-item routerLink="/settings">
+          <mat-icon>settings</mat-icon>
+          <span>Settings</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</mat-toolbar>

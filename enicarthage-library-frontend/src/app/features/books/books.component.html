@@ -1,0 +1,73 @@
+<div class="books-container">
+  <h1>Books Management</h1>
+
+  <div class="books-section">
+    <h2>Book List</h2>
+
+    <div class="search-filter-bar">
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search books by title, author or ISBN..."
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="onSearch()"
+      />
+
+      <select class="filter-select" [(ngModel)]="selectedStatus" (change)="onStatusChange()">
+        <option [ngValue]="null">All Statuses</option>
+        <option *ngFor="let s of statuses" [ngValue]="s">{{ s }}</option>
+      </select>
+
+      <select class="filter-select" [(ngModel)]="selectedCategory" (change)="onCategoryChange()">
+        <option [ngValue]="null">All Categories</option>
+        <option *ngFor="let c of categories" [ngValue]="c">{{ c }}</option>
+      </select>
+
+      <button class="search-button" (click)="onSearch()">Search</button>
+      <button class="search-button" style="background:#6c757d" (click)="clearFilters()">Clear</button>
+    </div>
+
+    <div class="loading" *ngIf="isLoading">
+      <div class="loading-spinner">Loading...</div>
+    </div>
+
+    <table class="books-table" *ngIf="!isLoading">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let book of getPaginatedBooks()">
+          <td>{{ book.title }}</td>
+          <td>{{ book.author }}</td>
+          <td>
+            <span
+              class="book-status"
+              [ngClass]="{
+                'available': book.status === 'AVAILABLE',
+                'borrowed': book.status === 'BORROWED',
+                'reserved': book.status === 'RESERVED'
+              }"
+            >
+              {{ book.status }}
+            </span>
+          </td>
+          <td>
+            <button class="action-button edit" (click)="borrowBook(book)">Borrow</button>
+            <button class="action-button delete" (click)="reserveBook(book)">Reserve</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pagination" *ngIf="!isLoading">
+      <button class="page-button" [disabled]="currentPage === 0" (click)="onPageChange({ pageIndex: currentPage - 1, pageSize: pageSize } as any)">Previous</button>
+      <button class="page-button active">{{ currentPage + 1 }}</button>
+      <button class="page-button" [disabled]="(currentPage + 1) * pageSize >= totalItems" (click)="onPageChange({ pageIndex: currentPage + 1, pageSize: pageSize } as any)">Next</button>
+    </div>
+  </div>
+</div>

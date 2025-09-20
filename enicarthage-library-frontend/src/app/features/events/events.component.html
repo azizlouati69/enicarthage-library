@@ -1,0 +1,61 @@
+<div class="events-container">
+  <h1>Events Management</h1>
+
+  <div class="events-section">
+    <h2>Event List</h2>
+
+    <div class="search-filter-bar">
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search by event name..."
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="onSearch()"
+      />
+
+      <select class="filter-select" [(ngModel)]="selectedStatus" (change)="onStatusChange()">
+        <option value="all">All</option>
+        <option value="upcoming">Upcoming</option>
+        <option value="past">Past</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+
+      <button class="search-button" (click)="onSearch()">Search</button>
+    </div>
+
+    <div class="loading" *ngIf="isLoading">
+      <div class="loading-spinner">Loading...</div>
+    </div>
+
+    <table class="events-table" *ngIf="!isLoading">
+      <thead>
+        <tr>
+          <th>Event Name</th>
+          <th>Date</th>
+          <th>Location</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ev of getPagedEvents()">
+          <td>{{ ev.name }}</td>
+          <td>{{ ev.startDate | date:'yyyy-MM-dd' }}</td>
+          <td>{{ ev.location || '-' }}</td>
+          <td>
+            <span class="event-status" [ngClass]="{
+              'upcoming': (ev.status || '').toLowerCase() === 'upcoming',
+              'past': (ev.status || '').toLowerCase() === 'past',
+              'cancelled': (ev.status || '').toLowerCase() === 'cancelled'
+            }">{{ ev.status || 'upcoming' }}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pagination" *ngIf="!isLoading">
+      <button class="page-button" (click)="onPagePrev()" [disabled]="currentPage === 0">Previous</button>
+      <button class="page-button active">{{ currentPage + 1 }}</button>
+      <button class="page-button" (click)="onPageNext()" [disabled]="(currentPage + 1) * pageSize >= totalItems">Next</button>
+    </div>
+  </div>
+</div>

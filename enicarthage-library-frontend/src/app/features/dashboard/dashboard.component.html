@@ -1,0 +1,33 @@
+<div class="dashboard-container">
+  <h1>Library Dashboard</h1>
+
+  <div class="stats-grid">
+    <div class="stat-card" *ngFor="let s of statCards">
+      <div class="stat-icon">📚</div>
+      <div class="stat-content">
+        <h3>{{ s.title }}</h3>
+        <p class="stat-number">{{ s.value }}</p>
+        <span class="stat-change" [ngClass]="s.changeType">{{ s.change }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="books-section">
+    <h2>Recent Books</h2>
+    <div class="books-grid">
+      <div class="book-card" *ngFor="let b of recentBooks">
+        <div class="book-cover">📖</div>
+        <h4>{{ b.title }}</h4>
+        <p>{{ b.author }}</p>
+        <span class="book-status" [ngClass]="getBookStatusClass(b.status)">{{ b.status }}</span>
+      </div>
+    </div>
+    <div class="pagination">
+      <button class="page-button">Previous</button>
+      <button class="page-button active">1</button>
+      <button class="page-button">2</button>
+      <button class="page-button">3</button>
+      <button class="page-button">Next</button>
+    </div>
+  </div>
+</div>

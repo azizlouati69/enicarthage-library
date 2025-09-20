@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENICARTHAGE Library Management System - Borrowings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e88e5, #42a5f5);
+            color: white;
+            padding: 16px 32px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header h1 {
+            font-size: 1.7rem;
+            font-weight: 500;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .logo {
+            width: 300px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .profile-picture {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #e3f2fd;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            object-fit: cover;
+        }
+
+        .profile-picture:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .profile-name {
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+        }
+
+        .logout-button {
+            padding: 8px;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .logout-button img {
+            width: 24px;
+            height: 24px;
+            display: block;
+        }
+
+        .logout-button:hover {
+            background: rgba(255,255,255,0.1);
+            transform: scale(1.1);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            min-height: calc(100vh - 72px);
+        }
+
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #dee2e6;
+            padding: 32px 0;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 72px;
+            height: calc(100vh - 72px);
+        }
+
+        .sidebar-item {
+            padding: 16px 32px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .sidebar-item:hover {
+            background-color: #f1f3f5;
+            padding-left: 36px;
+            transform: translateX(4px);
+        }
+
+        .sidebar-item.active {
+            background-color: #e3f2fd;
+            color: #1976d2;
+            border-right: 4px solid #1976d2;
+            font-weight: 500;
+        }
+
+        .sidebar-item .material-icons {
+            font-size: 24px;
+            color: #1976d2;
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 32px;
+            background-color: #f8f9fa;
+            overflow-y: auto;
+        }
+
+        .borrowings-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .borrowings-container h1 {
+            color: #212529;
+            margin-bottom: 40px;
+            font-size: 2.6rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            background: linear-gradient(to right, #1976d2, #42a5f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            position: relative;
+        }
+
+        .borrowings-container h1::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(to right, #1976d2, #42a5f5);
+            border-radius: 2px;
+        }
+
+        .borrowings-section {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .borrowings-section:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+
+        .borrowings-section h2 {
+            margin: 0 0 32px 0;
+            color: #212529;
+            font-size: 1.8rem;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: #1976d2;
+            box-shadow: 0 0 8px rgba(25, 118, 210, 0.3);
+            outline: none;
+        }
+
+        .filter-select {
+            padding: 12px 16px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .filter-select:focus {
+            border-color: #1976d2;
+            box-shadow: 0 0 8px rgba(25, 118, 210, 0.3);
+            outline: none;
+        }
+
+        .search-button {
+            padding: 12px 24px;
+            background: #1976d2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .search-button:hover {
+            background: #1565c0;
+            transform: translateY(-1px);
+        }
+
+        .borrowings-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .borrowings-table th,
+        .borrowings-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .borrowings-table th {
+            background: #f1f3f5;
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: #6c757d;
+        }
+
+        .borrowings-table td {
+            font-size: 1rem;
+            color: #212529;
+        }
+
+        .borrowings-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .borrowing-status {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .borrowing-status.active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .borrowing-status.overdue {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .borrowing-status.returned {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .action-button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .action-button.edit {
+            background: #1976d2;
+            color: white;
+            margin-right: 8px;
+        }
+
+        .action-button.edit:hover {
+            background: #1565c0;
+            transform: translateY(-1px);
+        }
+
+        .action-button.return {
+            background: #28a745;
+            color: white;
+        }
+
+        .action-button.return:hover {
+            background: #218838;
+            transform: translateY(-1px);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .page-button {
+            padding: 10px 20px;
+            background: #f1f3f5;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .page-button:hover {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .page-button.active {
+            background: #1976d2;
+            color: white;
+            border-color: #1976d2;
+        }
+
+        .footer {
+            background: #212529;
+            color: #f8f9fa;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+            font-size: 0.95rem;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 220px;
+            }
+            
+            .content-area {
+                padding: 20px;
+            }
+            
+            .borrowings-table {
+                font-size: 0.9rem;
+            }
+
+            .borrowings-table th,
+            .borrowings-table td {
+                padding: 12px;
+            }
+
+            .header {
+                padding: 12px 24px;
+                flex-wrap: wrap;
+            }
+
+            .borrowings-container h1 {
+                font-size: 2.2rem;
+            }
+
+            .profile-section {
+                margin-top: 12px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #dee2e6;
+                padding: 16px 0;
+                display: flex;
+                overflow-x: auto;
+                position: static;
+                height: auto;
+            }
+
+            .sidebar-item {
+                padding: 12px 20px;
+                white-space: nowrap;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .profile-section {
+                margin-top: 16px;
+            }
+
+            .logo {
+                width: 150px;
+                height: 25px;
+            }
+
+            .borrowings-table {
+                font-size: 0.85rem;
+            }
+
+            .borrowings-table th,
+            .borrowings-table td {
+                padding: 10px;
+            }
+
+            .action-button {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="header-left">
+                <img src="./images/logo.png" alt="Library Logo" class="logo">
+            </div>
+            <div class="profile-section">
+                <img src="./images/me.jpg" alt="Profile Picture" class="profile-picture">
+                <span class="profile-name">Aziz Louati</span>
+                <button class="logout-button" title="Logout">
+                    <img src="./images/logout.svg" alt="Logout">
+                </button>
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <nav class="sidebar">
+                <div class="sidebar-item"><i class="material-icons">dashboard</i> Dashboard</div>
+                <div class="sidebar-item"><i class="material-icons">book</i> Books</div>
+                <div class="sidebar-item"><i class="material-icons">people</i> Users</div>
+                <div class="sidebar-item active"><i class="material-icons">library_books</i> Borrowings</div>
+                <div class="sidebar-item"><i class="material-icons">event</i> Events</div>
+                <div class="sidebar-item"><i class="material-icons">settings</i> Settings</div>
+            </nav>
+            
+            <main class="content-area">
+                <div class="borrowings-container">
+                    <h1>Borrowings Management</h1>
+                    
+                    <div class="borrowings-section">
+                        <h2>Borrowing Records</h2>
+                        <div class="search-filter-bar">
+                            <input type="text" class="search-input" placeholder="Search by book title or borrower...">
+                            <select class="filter-select">
+                                <option value="all">All</option>
+                                <option value="active">Active</option>
+                                <option value="overdue">Overdue</option>
+                                <option value="returned">Returned</option>
+                            </select>
+                            <button class="search-button">Search</button>
+                        </div>
+                        <table class="borrowings-table">
+                            <thead>
+                                <tr>
+                                    <th>Book Title</th>
+                                    <th>Borrower</th>
+                                    <th>Borrow Date</th>
+                                    <th>Return Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Clean Code</td>
+                                    <td>Sarah Johnson</td>
+                                    <td>2025-09-01</td>
+                                    <td>2025-09-15</td>
+                                    <td><span class="borrowing-status active">Active</span></td>
+                                    <td>
+                                        <button class="action-button edit">Edit</button>
+                                        <button class="action-button return">Return</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Python Crash Course</td>
+                                    <td>Mohamed Ben Ali</td>
+                                    <td>2025-08-20</td>
+                                    <td>2025-09-03</td>
+                                    <td><span class="borrowing-status overdue">Overdue</span></td>
+                                    <td>
+                                        <button class="action-button edit">Edit</button>
+                                        <button class="action-button return">Return</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>The Mythical Man-Month</td>
+                                    <td>Ali Karray</td>
+                                    <td>2025-09-05</td>
+                                    <td>2025-09-19</td>
+                                    <td><span class="borrowing-status active">Active</span></td>
+                                    <td>
+                                        <button class="action-button edit">Edit</button>
+                                        <button class="action-button return">Return</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Refactoring</td>
+                                    <td>Linda Brown</td>
+                                    <td>2025-08-15</td>
+                                    <td>2025-08-29</td>
+                                    <td><span class="borrowing-status returned">Returned</span></td>
+                                    <td>
+                                        <button class="action-button edit">Edit</button>
+                                        <button class="action-button return" disabled>Return</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>System Design Interview</td>
+                                    <td>Emma Wilson</td>
+                                    <td>2025-09-10</td>
+                                    <td>2025-09-24</td>
+                                    <td><span class="borrowing-status active">Active</span></td>
+                                    <td>
+                                        <button class="action-button edit">Edit</button>
+                                        <button class="action-button return">Return</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pagination">
+                            <button class="page-button">Previous</button>
+                            <button class="page-button active">1</button>
+                            <button class="page-button">2</button>
+                            <button class="page-button">3</button>
+                            <button class="page-button">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        
+        <footer class="footer">
+            <p>&copy; 2025 ENICARTHAGE Library Management System. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
