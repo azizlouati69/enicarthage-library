@@ -5,7 +5,7 @@ import { RoleGuard } from './core/guards/role.guard';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/dashboard',
+    redirectTo: '/books',
     pathMatch: 'full'
   },
   {
@@ -54,6 +54,12 @@ export const routes: Routes = [
   {
     path: 'admin',
     loadComponent: () => import('./features/admin/admin.component').then(m => m.AdminComponent),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ['ADMIN', 'LIBRARIAN'] }
+  },
+  {
+    path: 'users',
+    loadComponent: () => import('./features/users/users.component').then(m => m.UsersComponent),
     canActivate: [AuthGuard, RoleGuard],
     data: { roles: ['ADMIN', 'LIBRARIAN'] }
   },

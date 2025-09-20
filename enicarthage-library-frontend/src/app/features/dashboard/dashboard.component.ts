@@ -9,6 +9,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RouterModule } from '@angular/router';
 import { Chart, ChartConfiguration, ChartType, registerables } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { DashboardService, DashboardOverview } from '../../core/services/dashboard.service';
+import { BookService, PagedResponse } from '../../core/services/book.service';
+import { Book, BookStatus } from '../../core/models/book.model';
 
 Chart.register(...registerables);
 
@@ -48,40 +51,8 @@ interface RecentActivity {
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  statCards: StatCard[] = [
-    {
-      title: 'Total Books',
-      value: '12,543',
-      icon: 'library_books',
-      color: '#3f51b5',
-      change: '+5.2%',
-      changeType: 'positive'
-    },
-    {
-      title: 'Active Borrowings',
-      value: '2,847',
-      icon: 'book_online',
-      color: '#4caf50',
-      change: '+12.1%',
-      changeType: 'positive'
-    },
-    {
-      title: 'Registered Users',
-      value: '8,234',
-      icon: 'people',
-      color: '#ff9800',
-      change: '+8.7%',
-      changeType: 'positive'
-    },
-    {
-      title: 'Upcoming Events',
-      value: '23',
-      icon: 'event',
-      color: '#e91e63',
-      change: '+3',
-      changeType: 'positive'
-    }
-  ];
+  statCards: StatCard[] = [];
+  recentBooks: Book[] = [];
 
   recentActivities: RecentActivity[] = [
     {
@@ -189,9 +160,36 @@ export class DashboardComponent implements OnInit {
     }
   };
 
-  constructor() {}
+  constructor(private dashboardService: DashboardService, private bookService: BookService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.dashboardService.getOverview().subscribe((ov: DashboardOverview) => {
+      const totalBooks = ov.books?.totalBooks ?? 0;
+      const totalUsers = ov.users?.totalUsers ?? 0;
+      const upcomingEvents = (ov.events as any)?.upcoming ?? 0;
+      const activeBorrowings = (ov.borrowings as any)?.active ?? 0;
+
+      this.statCards = [
+        { title: 'Total Books', value: String(totalBooks), icon: 'library_books', color: '#3f51b5', change: '+5.2%', changeType: 'positive' },
+        { title: 'Active Borrowings', value: String(activeBorrowings), icon: 'book_online', color: '#4caf50', change: '+12.1%', changeType: 'positive' },
+        { title: 'Registered Users', value: String(totalUsers), icon: 'people', color: '#ff9800', change: '+8.7%', changeType: 'positive' },
+        { title: 'Upcoming Events', value: String(upcomingEvents), icon: 'event', color: '#e91e63', change: '+3', changeType: 'positive' }
+      ];
+    });
+
+    this.bookService.getAll({ page: 0, size: 12 }).subscribe((resp: PagedResponse<Book>) => {
+      this.recentBooks = resp.content;
+    });
+  }
+
+  getBookStatusClass(status: BookStatus | string | undefined): string {
+    switch (status) {
+      case 'AVAILABLE': return 'available';
+      case 'BORROWED': return 'borrowed';
+      case 'RESERVED': return 'reserved';
+      default: return 'available';
+    }
+  }
 
   getActivityIcon(type: string): string {
     const icons: { [key: string]: string } = {

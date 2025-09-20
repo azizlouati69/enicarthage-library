@@ -49,6 +49,12 @@ export class SidebarComponent implements OnInit {
       roles: [UserRole.ADMIN, UserRole.LIBRARIAN, UserRole.STUDENT, UserRole.FACULTY]
     },
     {
+      label: 'Users',
+      icon: 'people',
+      route: '/users',
+      roles: [UserRole.ADMIN, UserRole.LIBRARIAN]
+    },
+    {
       label: 'My Borrowings',
       icon: 'book_online',
       route: '/borrowings',

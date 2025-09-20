@@ -16,24 +16,8 @@ export class AuthService {
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
   constructor(private http: HttpClient) {
-    // For screenshots: simulate logged-in user
-    this.simulateLoggedInUser();
-    // this.checkAuthStatus();
-  }
-
-  private simulateLoggedInUser(): void {
-    const mockUser: User = {
-      id: 1,
-      username: 'admin',
-      email: 'admin@enicarthage.edu.tn',
-      firstName: 'Admin',
-      lastName: 'User',
-      role: 'ADMIN' as any,
-      status: 'ACTIVE' as any,
-      createdAt: new Date().toISOString()
-    };
-    this.currentUserSubject.next(mockUser);
-    this.isAuthenticatedSubject.next(true);
+    // Initialize auth state based on token
+    this.checkAuthStatus();
   }
 
   login(credentials: LoginRequest): Observable<LoginResponse> {

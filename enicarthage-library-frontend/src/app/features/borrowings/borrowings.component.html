@@ -1,0 +1,66 @@
+<div class="borrowings-container">
+  <h1>Borrowings Management</h1>
+
+  <div class="borrowings-section">
+    <h2>Borrowing Records</h2>
+
+    <div class="search-filter-bar">
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search by id or date..."
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="onSearch()"
+      />
+
+      <select class="filter-select" [(ngModel)]="selectedStatus" (change)="onStatusChange()">
+        <option value="all">All</option>
+        <option value="active">Active</option>
+        <option value="overdue">Overdue</option>
+        <option value="returned">Returned</option>
+      </select>
+
+      <button class="search-button" (click)="onSearch()">Search</button>
+    </div>
+
+    <div class="loading" *ngIf="isLoading">
+      <div class="loading-spinner">Loading...</div>
+    </div>
+
+    <table class="borrowings-table" *ngIf="!isLoading">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Borrow Date</th>
+          <th>Return Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of getFilteredRows()">
+          <td>{{ r.id }}</td>
+          <td>{{ r.borrowDate | date:'yyyy-MM-dd' }}</td>
+          <td>{{ r.returnDate ? (r.returnDate | date:'yyyy-MM-dd') : '-' }}</td>
+          <td>
+            <span class="borrowing-status" [ngClass]="{
+              'active': (r.status || '').toLowerCase() === 'active',
+              'overdue': (r.status || '').toLowerCase() === 'overdue',
+              'returned': (r.status || '').toLowerCase() === 'returned'
+            }">{{ r.status }}</span>
+          </td>
+          <td>
+            <button class="action-button edit">Edit</button>
+            <button class="action-button return" (click)="onReturn(r)" [disabled]="(r.status || '').toLowerCase() !== 'active'">Return</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pagination" *ngIf="!isLoading">
+      <button class="page-button" (click)="onPagePrev()" [disabled]="currentPage === 0">Previous</button>
+      <button class="page-button active">{{ currentPage + 1 }}</button>
+      <button class="page-button" (click)="onPageNext()" [disabled]="(currentPage + 1) * pageSize >= totalItems">Next</button>
+    </div>
+  </div>
+</div>

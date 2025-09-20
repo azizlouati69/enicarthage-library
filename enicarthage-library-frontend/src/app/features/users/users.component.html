@@ -1,0 +1,56 @@
+<div class="users-container">
+  <h1>Users Management</h1>
+
+  <div class="users-section">
+    <h2>User List</h2>
+
+    <div class="search-filter-bar">
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search users by name or email..."
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="onSearch()"
+      />
+
+      <select class="filter-select" [(ngModel)]="selectedRole">
+        <option value="all">All</option>
+        <option value="ADMIN">Admin</option>
+        <option value="LIBRARIAN">Librarian</option>
+        <option value="STUDENT">Student</option>
+        <option value="FACULTY">Faculty</option>
+      </select>
+
+      <button class="search-button" (click)="onSearch()">Search</button>
+    </div>
+
+    <div class="loading" *ngIf="isLoading">
+      <div class="loading-spinner">Loading...</div>
+    </div>
+
+    <table class="users-table" *ngIf="!isLoading">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of getFilteredRows()">
+          <td>{{ u.firstName }} {{ u.lastName }}</td>
+          <td>{{ u.email }}</td>
+          <td>{{ u.role }}</td>
+          <td>
+            <span class="user-status" [ngClass]="{ 'active': u.status === 'ACTIVE', 'inactive': u.status !== 'ACTIVE' }">
+              {{ u.status }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Optional pagination UI can be added once backend pagination is implemented -->
+  </div>
+</div>

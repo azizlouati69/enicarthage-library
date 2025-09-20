@@ -1,0 +1,11 @@
+.user-container { max-width: 1400px; margin: 0 auto; }
+.tabs { display: flex; margin-bottom: 24px; border-bottom: 2px solid #dee2e6; }
+.tab { padding: 12px 24px; font-size: 1.1rem; font-weight: 500; color: #6c757d; cursor: pointer; }
+.tab.active { color: #1976d2; border-bottom: 3px solid #1976d2; }
+.user-section { background: #fff; border-radius: 12px; padding: 32px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+.books-table, .events-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; }
+.books-table th, .books-table td, .events-table th, .events-table td { padding: 16px; text-align: left; border-bottom: 1px solid #dee2e6; }
+.books-table th, .events-table th { background: #f1f3f5; font-weight: 500; font-size: 0.9rem; text-transform: uppercase; color: #6c757d; }
+.book-status.available { background: #d4edda; color: #155724; padding: 6px 16px; border-radius: 20px; }
+.event-status.upcoming { background: #d4edda; color: #155724; padding: 6px 16px; border-radius: 20px; }
+.action-button.reserve { padding: 8px 16px; border: none; border-radius: 6px; background: #28a745; color: #fff; cursor: pointer; }
